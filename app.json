@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "HomeServies",
+    "scheme": "HomeServies",
     "slug": "HomeServies",
     "version": "1.0.0",
     "orientation": "portrait",
