@@ -2,6 +2,7 @@ import React, { useEffect, useState, } from 'react';
 import { FlatList, Text, View } from 'react-native';
 import GlobalApi from '../../Utils/GlobalApi';
 import Heading from '../../components/Heading';
+import BusinessListItem from './BusinessListItem';
 
 export default function BusinessList() {
 
@@ -9,11 +10,11 @@ export default function BusinessList() {
 
     useEffect(() => {
         getBusinessList();
-    
+
     }, [])
 
     const getBusinessList = () => {
-        GlobalApi.getBusinessList().then(resp=>{
+        GlobalApi.getBusinessList().then(resp => {
             console.log(resp)
             setbusinessLists(resp.businessLists);
         })
@@ -21,16 +22,19 @@ export default function BusinessList() {
     }
 
     return (
-        <View style={{ marginTop: 20 }}>
+        <View style={{ marginTop: 20 ,  }}>
             <Heading text={'Leatest Business'} isViewAll={true} />
-            <FlatList 
-            data={businessLists}
-            horizontal={true}
-            renderItem={({ item, index }) => (
-                <View style={{marginRight:20}}>
-                   <Text>{item.name}</Text>
-                </View>
-            )}
+            <FlatList
+                data={businessLists}
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+                renderItem={({ item, index }) => (
+
+                    <View style={{ marginRight: 10, }}>
+                        <BusinessListItem business={item} />
+                    </View>
+
+                )}
             />
         </View>
     )

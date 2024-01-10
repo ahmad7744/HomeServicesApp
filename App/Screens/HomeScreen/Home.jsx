@@ -4,6 +4,7 @@ import Header from './Header'
 import Slider from './Slider'
 import Categories from './Categories'
 import BusinessList from './BusinessList'
+import Colors from '../../Utils/Colors'
 
 
 export default function Home() {

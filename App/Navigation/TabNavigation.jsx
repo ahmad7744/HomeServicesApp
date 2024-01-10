@@ -8,6 +8,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons'; 
 import { FontAwesome } from '@expo/vector-icons'; 
 import Colors from '../Utils/Colors';
+import HomeNavigation from './HomeNavigation';
 
 
 const Tab = createBottomTabNavigator();
@@ -20,7 +21,7 @@ export default function TabNavigation() {
              headerShown: false,
              tabBarActiveTintColor:Colors.PRIMARY,
              }}>
-            <Tab.Screen name='home' component={Home}
+            <Tab.Screen name='homeScreen' component={HomeNavigation}
                 options={{
                     tabBarLabel: ({ color }) => (
                         <Text style={{ color: color, fontSize: 12, marginTop: -7 }}>Home</Text>
