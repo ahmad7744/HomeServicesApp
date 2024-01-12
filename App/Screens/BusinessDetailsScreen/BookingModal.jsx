@@ -1,19 +1,23 @@
-import { View, Text, TouchableOpacity, StyleSheet, FlatList, TextInput, ScrollView, KeyboardAvoidingView } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet, FlatList, TextInput, ScrollView, KeyboardAvoidingView, ToastAndroid } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 import React, { useState, useEffect } from 'react'
 import CalendarPicker from "react-native-calendar-picker";
 import Colors from '../../Utils/Colors';
 import Heading from '../../components/Heading';
+import GlobalApi from '../../Utils/GlobalApi';
+import { useUser } from '@clerk/clerk-expo';
+import moment from 'moment';
 
 
 
 
 
-export default function BookingModal({ hideModal }) {
+export default function BookingModal({ businessId, hideModal }) {
     const [timeList, settimeList] = useState();
     const [selectedTime, setselectedTime] = useState();
     const [selectedDate, setselectedDate] = useState();
     const [note, setnote] = useState();
+    const { user } = useUser();
 
 
     useEffect(() => {
@@ -46,6 +50,33 @@ export default function BookingModal({ hideModal }) {
         }
 
         settimeList(timeArray);
+    }
+
+    // Crearte Booking Method 
+    const createNewBooking = () => {
+        if (!selectedTime || !selectedDate) {
+            ToastAndroid.show("Please Select Date and Time", ToastAndroid.LONG)
+            return;
+        }
+
+        const data = {
+            userName: user?.fullName,
+            userEmail: user?.primaryEmailAddress.emailAddress,
+            time: selectedTime,
+            date: moment(selectedDate).format("DD-MMM-YYYY"),
+            // note:note,
+            businessId: businessId,
+        }
+
+
+        GlobalApi.createBooking(data).then(resp => {
+            console.log("Resp", resp)
+        })
+        ToastAndroid.show("Booking Created Successfully!", ToastAndroid.LONG)
+        setTimeout(() => {
+            hideModal();
+        }, 1000);
+
     }
 
 
@@ -107,7 +138,9 @@ export default function BookingModal({ hideModal }) {
                 </View>
 
                 {/* Confirmation Buttion*/}
-                <TouchableOpacity style={{ marginTop: 15 }}>
+                <TouchableOpacity style={{ marginTop: 15 }}
+                    onPress={() => createNewBooking()}
+                >
                     <Text style={styles.confirmBtn}>Confirm & Book</Text>
                 </TouchableOpacity>
 
